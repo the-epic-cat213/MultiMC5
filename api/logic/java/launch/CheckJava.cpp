@@ -1,4 +1,5 @@
-/* Copyright 2013-2018 MultiMC Contributors
+/* Not Copyrighted, modified by the_epic_cat213
+ * Original Project Copyright 2013-2018 MultiMC Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,22 +34,22 @@ void CheckJava::executeTask()
         if (perInstance)
         {
             emit logLine(
-                tr("The java binary \"%1\" couldn't be found. Please fix the java path "
+                tr("TLMCWARN: The java binary \"%1\" couldn't be found. Please fix the java path "
                    "override in the instance's settings or disable it.").arg(m_javaPath),
-                MessageLevel::Warning);
+                MessageLevel::TLMCWARN);
         }
         else
         {
-            emit logLine(tr("The java binary \"%1\" couldn't be found. Please set up java in "
+            emit logLine(tr("TLMCWARN: The java binary \"%1\" couldn't be found. Please set up java in "
                             "the settings.").arg(m_javaPath),
-                         MessageLevel::Warning);
+                         MessageLevel::TLMCWARN);
         }
-        emitFailed(tr("Java path is not valid."));
+        emitFailed(tr("TLMCFAIL: Java path is not valid."));
         return;
     }
     else
     {
-        emit logLine("Java path is:\n" + m_javaPath + "\n\n", MessageLevel::MultiMC);
+        emit logLine("TLMCINFO: Java path is:\n" + m_javaPath + "\n\n", MessageLevel::TLMCINFO);
     }
 
     QFileInfo javaInfo(realJavaPath);
@@ -61,7 +62,7 @@ void CheckJava::executeTask()
     if (javaUnixTime != storedUnixTime || storedVersion.size() == 0 || storedArchitecture.size() == 0)
     {
         m_JavaChecker = std::make_shared<JavaChecker>();
-        emit logLine(tr("Checking Java version..."), MessageLevel::MultiMC);
+        emit logLine(tr("TLMCINFO: Checking Java version..."), MessageLevel::TLMCINFO);
         connect(m_JavaChecker.get(), &JavaChecker::checkFinished, this, &CheckJava::checkJavaFinished);
         m_JavaChecker->m_path = realJavaPath;
         m_JavaChecker->performCheck();
@@ -83,18 +84,18 @@ void CheckJava::checkJavaFinished(JavaCheckResult result)
         case JavaCheckResult::Validity::Errored:
         {
             // Error message displayed if java can't start
-            emit logLine(tr("Could not start java:"), MessageLevel::Error);
-            emit logLines(result.errorLog.split('\n'), MessageLevel::Error);
-            emit logLine("\nCheck your MultiMC Java settings.", MessageLevel::MultiMC);
+            emit logLine(tr("TLMCERR: Could not start java:"), MessageLevel::TLMCERR);
+            emit logLines(result.errorLog.split('\n'), MessageLevel::TLMCERR);
+            emit logLine("\n TLMCINFO: Check your MultiMC Java settings.", MessageLevel::TLMCINFO);
             printSystemInfo(false, false);
-            emitFailed(tr("Could not start java!"));
+            emitFailed(tr("TLMCERR: Could not start java!"));
             return;
         }
         case JavaCheckResult::Validity::ReturnedInvalidData:
         {
-            emit logLine(tr("Java checker returned some invalid data MultiMC doesn't understand:"), MessageLevel::Error);
-            emit logLines(result.outLog.split('\n'), MessageLevel::Warning);
-            emit logLine("\nMinecraft might not start properly.", MessageLevel::MultiMC);
+            emit logLine(tr("TLMCERR: Java checker returned some invalid data TLMC doesn't understand:"), MessageLevel::TLMCERR);
+            emit logLines(result.outLog.split('\n'), MessageLevel::TLMCWARN);
+            emit logLine("\n TLMCINFO: Minecraft might not start properly.", MessageLevel::TLMCINFO);
             printSystemInfo(false, false);
             emitSucceeded();
             return;
@@ -114,7 +115,7 @@ void CheckJava::checkJavaFinished(JavaCheckResult result)
 
 void CheckJava::printJavaInfo(const QString& version, const QString& architecture)
 {
-    emit logLine(tr("Java is version %1, using %2-bit architecture.\n\n").arg(version, architecture), MessageLevel::MultiMC);
+    emit logLine(tr("TLMCINFO: Java is version %1, using %2-bit architecture.\n\n").arg(version, architecture), MessageLevel::TLMCINFO);
     printSystemInfo(true, architecture == "64");
 }
 
@@ -124,13 +125,13 @@ void CheckJava::printSystemInfo(bool javaIsKnown, bool javaIs64bit)
     auto system64 = Sys::isSystem64bit();
     if(cpu64 != system64)
     {
-        emit logLine(tr("Your CPU architecture is not matching your system architecture. You might want to install a 64bit Operating System.\n\n"), MessageLevel::Error);
+        emit logLine(tr("TLMCERR: Your CPU architecture is not matching your system architecture. You might want to install a 64bit Operating System.\n\n"), MessageLevel::TLMCERR);
     }
     if(javaIsKnown)
     {
         if(javaIs64bit != system64)
         {
-            emit logLine(tr("Your Java architecture is not matching your system architecture. You might want to install a 64bit Java version.\n\n"), MessageLevel::Error);
+            emit logLine(tr("TLMCERR: Your Java architecture is not matching your system architecture. You might want to install a 64bit Java version.\n\n"), MessageLevel::TLMCERR);
         }
     }
 }
