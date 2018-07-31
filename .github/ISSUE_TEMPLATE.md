@@ -18,7 +18,7 @@ If you believe your issue to be a bug, please make sure you check the wiki page:
 
 System Information
 -----------------------------
-MultiMC version:
+TerminalLauncherMC version:
 
 Operating System:
 
