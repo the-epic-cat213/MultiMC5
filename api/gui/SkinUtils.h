@@ -1,4 +1,5 @@
-/* Copyright 2013-2018 MultiMC Contributors
+/* Not Copyrighted, modified by the_epic_cat213
+ * Original Project Copyright 2013-2018 MultiMC Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +18,9 @@
 
 #include <QPixmap>
 
-#include "multimc_gui_export.h"
+#include "tlmc_gui_export.h"
 
 namespace SkinUtils
 {
-QPixmap MULTIMC_GUI_EXPORT getFaceFromCache(QString id, int height = 64, int width = 64);
+QPixmap TLMC_GUI_EXPORT getFaceFromCache(QString id, int height = 64, int width = 64);
 }
