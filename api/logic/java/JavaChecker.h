@@ -3,13 +3,13 @@
 #include <QTimer>
 #include <memory>
 
-#include "multimc_logic_export.h"
+#include "tlmc_logic_export.h"
 
 #include "JavaVersion.h"
 
 class JavaChecker;
 
-struct MULTIMC_LOGIC_EXPORT JavaCheckResult
+struct TLMC_LOGIC_EXPORT JavaCheckResult
 {
     QString path;
     QString mojangPlatform;
@@ -29,7 +29,7 @@ struct MULTIMC_LOGIC_EXPORT JavaCheckResult
 
 typedef std::shared_ptr<QProcess> QProcessPtr;
 typedef std::shared_ptr<JavaChecker> JavaCheckerPtr;
-class MULTIMC_LOGIC_EXPORT JavaChecker : public QObject
+class TLMC_LOGIC_EXPORT JavaChecker : public QObject
 {
     Q_OBJECT
 public:
